@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RadiantGames.AudioSystem
+namespace RadiantGames.Tools.AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
@@ -15,10 +15,9 @@ namespace RadiantGames.AudioSystem
         [Header("References")]
         public GameObject SoundSFX;
         public SoundClips[] audioList;
-        float SFXVolume = 100f;
 
         //Just your typical singleton pattern.
-        public static AudioManager Instance { get; private set; }
+        public static AudioManager Instance { get; private set; }        
         void Start()
         {
             // If there is an instance, and it's not me, delete myself.
@@ -34,18 +33,37 @@ namespace RadiantGames.AudioSystem
             SoundSFX = transform.Find("SoundSFX").gameObject;
         }
 
-
-        /// <summary>
-        /// Simply plays your desired sound
-        /// </summary>
-        /// <param name="soundType">Select the sound type you wanna play</param>
-        public void PlaySound(SoundTypes soundType)
+        //Creating 2 overloads of PlaySound()
+        /// <param name="soundType">The sound you want to play</param>
+        public void PlayAudio(SoundTypes soundType)
         {
+            //Making a new gameobject to add audioSource component in.
             GameObject soundPlayer = new GameObject("SFX Source");
             soundPlayer.transform.SetParent(SoundSFX.transform);
             AudioSource soundSource = soundPlayer.AddComponent<AudioSource>();
+            //Playing the sound
             AudioClip audioClip = GetAudioClip(soundType);
             soundSource.PlayOneShot(audioClip);
+            //Deleting the soundPlayer
+            StartCoroutine(DeleteAudioObject(soundPlayer, audioClip));
+        }
+
+        /// <param name="soundType">The sound you want to play</param>
+        /// <param name="audioSettings">Settings on which you want your audio to play</param>
+        public void PlayAudio(SoundTypes soundType, AudioSettings audioSettings)
+        {
+            //Making a new gameobject to add audioSource component in.
+            GameObject soundPlayer = new GameObject("SFX Source");
+            soundPlayer.transform.SetParent(SoundSFX.transform);
+            AudioSource soundSource = soundPlayer.AddComponent<AudioSource>();
+            //Changing settings according to User
+            soundSource.volume = audioSettings.volume;
+            soundSource.pitch = audioSettings.pitch;
+            //Playing the sound
+            AudioClip audioClip = GetAudioClip(soundType);
+            soundSource.PlayOneShot(audioClip);
+            //Deleting the soundPlayer
+            StartCoroutine(DeleteAudioObject(soundPlayer,audioClip));
         }
 
         //Helper Methods
@@ -58,8 +76,15 @@ namespace RadiantGames.AudioSystem
                     return soundClip.audioClip;
                 }
             }
-            Debug.LogError("No soundtype found");
+            Debug.LogError("No sound type found");
             return null;
+        }
+
+        //Delete audio after it is done playing to save memory
+        IEnumerator DeleteAudioObject(GameObject audioObject,AudioClip audioClip) 
+        {
+            yield return new WaitForSeconds(audioClip.length);
+            Destroy(audioObject);
         }
 
         public AudioSource GetMusicSource()
@@ -74,15 +99,6 @@ namespace RadiantGames.AudioSystem
         public void SetMusicVolume(float value)
         {
             MusicHandler.musicSource.volume = value;
-        }
-
-        public float GetSFXVolume()
-        {
-            return SFXVolume;
-        }
-        public void SetSFXVolume(float value)
-        {
-            SFXVolume = value;
         }
     }
 }

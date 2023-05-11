@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RadiantGames.AudioSystem
+namespace RadiantGames.Tools.AudioSystem
 {
     public class MusicHandler : MonoBehaviour
     {
