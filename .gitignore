@@ -10,8 +10,8 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
-# Removing Licence.meta because github treats this file as another license
-/LICENCE.meta
+# Removing License.meta because github treats this file as another license
+/LICENSE.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
