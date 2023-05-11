@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug to make this repo better.
+about: Report a bug to make this repository better.
 title: ''
 labels: bug
 assignees: mohakdev
