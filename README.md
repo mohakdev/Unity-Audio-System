@@ -64,6 +64,6 @@ This audio-system also has a built in music system so not only can you play audi
 ### Helper Methods
 These helper methods will save you a lot of time.
 1. `AudioManager.Instance.GetMusicSource()` - Returns you the Audio Source which plays all music.
-2. `AudioManager.Instance.GetAudioClip(SoundTypes soundType)` - Returns you the Audio Clip and takes SoundType as Input.
+2. `AudioManager.Instance.GetAudioClip()` - Returns you the Audio Clip and takes SoundType as Input.
 ## License
 This code is licensed under MIT License which you can read [here](https://github.com/mohakdev/Unity-Audio-System/blob/main/LICENSE)
