@@ -4,12 +4,12 @@
 ## Table of contents
 1. [Description](#Description)
 2. [Install](#Install)
-3. [How to use](#HowtoUse)
-	- [Namespace Usage](#NamespaceUsage)
-	- [Play Sound](#PlaySound)
-	- [Play Sound with changed settings](#PlaySoundwithchangedsettings)
-	- [Music System](#BuiltinMusicSystem)
-	- [Helper Methods](#HelperMethods)
+3. [How to use](#How to Use)
+	- [Namespace Usage](#Namespace Usage)
+	- [Play Sound](#Play Sound)
+	- [Play Sound with changed settings](#Pla ySound with changed settings)
+	- [Music System](#Built in Music System)
+	- [Helper Methods](#Helper Methods)
 4. [License](#License)
 
 ## Description
