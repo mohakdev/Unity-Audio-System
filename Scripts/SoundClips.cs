@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RadiantGames.Tools.AudioSystem
+namespace RadiantTools.AudioSystem
 {
     [Serializable]
     public class SoundClips

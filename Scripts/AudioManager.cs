@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace RadiantGames.Tools.AudioSystem
+namespace RadiantTools.AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
@@ -13,8 +12,8 @@ namespace RadiantGames.Tools.AudioSystem
         }
 
         [Header("References")]
-        public GameObject SoundSFX;
-        public SoundClips[] audioList;
+        [SerializeField] GameObject SoundSFX;
+        [SerializeField] SoundClips[] audioList;
 
         //Just your typical singleton pattern.
         public static AudioManager Instance { get; private set; }        

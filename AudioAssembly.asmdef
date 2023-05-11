@@ -1,6 +1,6 @@
 {
     "name": "AudioAssembly",
-    "rootNamespace": "RadiantGames.Tools.AudioSystem",
+    "rootNamespace": "RadiantTools.AudioSystem",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
