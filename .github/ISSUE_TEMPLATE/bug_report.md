@@ -2,7 +2,7 @@
 name: Bug report
 about: Report a bug to make this repo better.
 title: ''
-labels: ''
+labels: bug
 assignees: mohakdev
 
 ---
