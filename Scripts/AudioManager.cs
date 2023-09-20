@@ -5,15 +5,8 @@ namespace RadiantTools.AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
-        public enum SoundTypes
-        {
-            AudioOne,
-            AudioTwo
-        }
-
         [Header("References")]
-        [SerializeField] GameObject SoundSFX;
-        [SerializeField] SoundClips[] audioList;
+        public SoundClips[] audioList;
 
         //Just your typical singleton pattern.
         public static AudioManager Instance { get; private set; }        
@@ -29,75 +22,59 @@ namespace RadiantTools.AudioSystem
                 Instance = this;
             }
 
-            SoundSFX = transform.Find("SoundSFX").gameObject;
+            MakeAudioPlayer("SoundSFX");
+
+            //Setting Music Player
+            AudioPlayer musicPlayer = MakeAudioPlayer("Music");
+            musicPlayer.SetAudioPlayerSettings(loop : true , playOnStart : true);
         }
 
-        //Creating 2 overloads of PlaySound()
-        /// <param name="soundType">The sound you want to play</param>
-        public void PlayAudio(SoundTypes soundType)
+        /// <summary>
+        /// Make an Audio Player
+        /// </summary>
+        /// <param name="name">name for the audio player</param>
+        /// <returns>The created audio player</returns>
+        public AudioPlayer MakeAudioPlayer(string name)
         {
-            //Making a new gameobject to add audioSource component in.
-            GameObject soundPlayer = new GameObject("SFX Source");
-            soundPlayer.transform.SetParent(SoundSFX.transform);
-            AudioSource soundSource = soundPlayer.AddComponent<AudioSource>();
-            //Playing the sound
-            AudioClip audioClip = GetAudioClip(soundType);
-            soundSource.PlayOneShot(audioClip);
-            //Deleting the soundPlayer
-            StartCoroutine(DeleteAudioObject(soundPlayer, audioClip));
+            //Making a new AudioObject
+            GameObject audioObject = new GameObject(name);
+            audioObject.transform.SetParent(transform);
+            //Adding an AudioSource & AudioPlayer to the AudioObject
+            audioObject.AddComponent<AudioSource>();
+            return audioObject.AddComponent<AudioPlayer>();
         }
 
-        /// <param name="soundType">The sound you want to play</param>
-        /// <param name="audioSettings">Settings on which you want your audio to play</param>
-        public void PlayAudio(SoundTypes soundType, AudioSettings audioSettings)
+        /// <summary>
+        /// Deletes an Audio Player
+        /// </summary>
+        /// <param name="name">Name of the Audio Player to want to delete</param>
+        public void DeleteAudioPlayer(string name)
         {
-            //Making a new gameobject to add audioSource component in.
-            GameObject soundPlayer = new GameObject("SFX Source");
-            soundPlayer.transform.SetParent(SoundSFX.transform);
-            AudioSource soundSource = soundPlayer.AddComponent<AudioSource>();
-            //Changing settings according to User
-            soundSource.volume = audioSettings.volume;
-            soundSource.pitch = audioSettings.pitch;
-            //Playing the sound
-            AudioClip audioClip = GetAudioClip(soundType);
-            soundSource.PlayOneShot(audioClip);
-            //Deleting the soundPlayer
-            StartCoroutine(DeleteAudioObject(soundPlayer,audioClip));
-        }
-
-        //Helper Methods
-        public AudioClip GetAudioClip(SoundTypes soundType)
-        {
-            foreach(SoundClips soundClip in audioList)
+            foreach(Transform audioTransform in transform)
             {
-                if (soundClip.soundType.Equals(soundType))
+                if(audioTransform.name == name)
                 {
-                    return soundClip.audioClip;
+                    Destroy(audioTransform.gameObject);
+                    return;
                 }
             }
-            Debug.LogError("No sound type found");
+        }
+        /// <summary>
+        /// Gets a particular audio player
+        /// </summary>
+        /// <param name="name">name of the audio player you want</param>
+        /// <returns>audio player if found otherwise returns null</returns>
+        public AudioPlayer GetAudioPlayer(string name)
+        {
+            foreach (Transform audioTransform in transform)
+            {
+                if (audioTransform.name == name)
+                {
+                    return audioTransform.GetComponent<AudioPlayer>();
+                }
+            }
+            //If no audioPlayer is found
             return null;
-        }
-
-        //Delete audio after it is done playing to save memory
-        IEnumerator DeleteAudioObject(GameObject audioObject,AudioClip audioClip) 
-        {
-            yield return new WaitForSeconds(audioClip.length);
-            Destroy(audioObject);
-        }
-
-        public AudioSource GetMusicSource()
-        {
-            return MusicHandler.musicSource;
-        }
-
-        public float GetMusicVolume()
-        {
-            return MusicHandler.musicSource.volume;
-        }
-        public void SetMusicVolume(float value)
-        {
-            MusicHandler.musicSource.volume = value;
         }
     }
 }

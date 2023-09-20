@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RadiantTools.AudioSystem
@@ -9,24 +7,20 @@ namespace RadiantTools.AudioSystem
     {
         void Start()
         {
-            Invoke(nameof(ExampleAudio), 3f);
-            Invoke(nameof(ExampleAudioTwo), 6f);
+            StartCoroutine(PlaySampleAudio());
         }
 
-        void ExampleAudio()
+        IEnumerator PlaySampleAudio()
         {
-            //Simply playing a sound
-            AudioManager.Instance.PlayAudio(AudioManager.SoundTypes.AudioTwo);
-        }
-        void ExampleAudioTwo()
-        {
-            //Changing settings of audio as well
-            AudioSettings audioSettings = new()
-            {
-                pitch = 1.3f,
-                volume = 0.6f
-            };
-            AudioManager.Instance.PlayAudio(AudioManager.SoundTypes.AudioOne, audioSettings);
+            yield return new WaitForSeconds(4f);
+            
+            //To Play a Sound Effect
+            AudioManager.Instance.GetAudioPlayer("SoundSFX").PlayAudio(SoundTypes.AudioTwo);
+            yield return new WaitForSeconds(4f);
+
+            //To Make a Custom Audio Player
+            AudioPlayer customPlayer = AudioManager.Instance.MakeAudioPlayer("ABCD");
+            customPlayer.PlayAudio(SoundTypes.AudioTwo);
         }
     }
 }
