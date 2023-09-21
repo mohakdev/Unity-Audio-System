@@ -26,7 +26,7 @@ namespace RadiantTools.AudioSystem
 
             //Setting Music Player
             AudioPlayer musicPlayer = MakeAudioPlayer("Music");
-            musicPlayer.SetAudioPlayerSettings(loop : true , playOnStart : true);
+            musicPlayer.SetAudioSettings(loop : true , playOnStart : true);
         }
 
         /// <summary>

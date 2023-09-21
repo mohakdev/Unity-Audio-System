@@ -11,7 +11,7 @@ namespace RadiantTools.AudioSystem
             audioSource = GetComponent<AudioSource>();
         }
 
-        public void PlayAudio(SoundTypes soundType)
+        public void PlayAudioOnce(SoundTypes soundType)
         {
             //If audioSource is null then assign one
             if(audioSource == null) {
@@ -21,7 +21,26 @@ namespace RadiantTools.AudioSystem
             audioSource.PlayOneShot(GetAudioClip(soundType));
         }
 
-        public void SetAudioPlayerSettings(float volume = 1f, float pitch = 1f, bool loop = false, bool playOnStart = false)
+        /// <summary>
+        /// Sets the audioSource clip
+        /// </summary>
+        /// <param name="audioClip">the audio you want to set</param>
+        public void SetAudioClip(AudioClip audioClip)
+        {
+            audioSource.clip = audioClip;
+        }
+        /// <summary>
+        /// Plays the audio clip already set in audioSource
+        /// </summary>
+        public void PlayAudio()
+        {
+            audioSource.Play();
+        }
+
+        /// <summary>
+        /// Changes audio settings
+        /// </summary>
+        public void SetAudioSettings(float volume = 1f, float pitch = 1f, bool loop = false, bool playOnStart = false)
         {
             audioSource.volume = volume;
             audioSource.pitch = pitch;

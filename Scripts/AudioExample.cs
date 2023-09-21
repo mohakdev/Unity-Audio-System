@@ -7,20 +7,25 @@ namespace RadiantTools.AudioSystem
     {
         void Start()
         {
-            StartCoroutine(PlaySampleAudio());
+            AudioManager.Instance.DeleteAudioPlayer("Test");
+            AudioPlayer customPlayer = AudioManager.Instance.MakeAudioPlayer("Test");
+            customPlayer.SetAudioClip(customPlayer.GetAudioClip(SoundTypes.AudioTwo));
+            customPlayer.SetAudioSettings(loop: true);
+            customPlayer.PlayAudio();
         }
 
         IEnumerator PlaySampleAudio()
         {
             yield return new WaitForSeconds(4f);
-            
+
             //To Play a Sound Effect
-            AudioManager.Instance.GetAudioPlayer("SoundSFX").PlayAudio(SoundTypes.AudioTwo);
+            AudioPlayer soundSFX = AudioManager.Instance.GetAudioPlayer("SoundSFX");
+            soundSFX.PlayAudioOnce(SoundTypes.AudioOne);
             yield return new WaitForSeconds(4f);
 
             //To Make a Custom Audio Player
             AudioPlayer customPlayer = AudioManager.Instance.MakeAudioPlayer("ABCD");
-            customPlayer.PlayAudio(SoundTypes.AudioTwo);
+            customPlayer.PlayAudioOnce(SoundTypes.AudioTwo);
         }
     }
 }
