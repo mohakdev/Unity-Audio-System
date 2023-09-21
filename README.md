@@ -6,10 +6,10 @@
 2. [Install](#Install)
 3. [How to use](#How-to-Use)
 	- [Namespace Usage](#Namespace-Usage)
-	- [Play Sound](#Play-Sound)
-	- [Play Sound with changed settings](#Play-Sound-with-changed-settings)
-	- [Music System](#Built-in-Music-System)
-	- [Helper Methods](#Helper-Methods)
+	- [Components of Audio System](#Components-of-Audio-System)
+	- [Play One Shot Sounds](#Play-One-Shot-Sounds)
+	- [Play using Custom Sounds](#Play-using-Custom-Sounds)
+	- [Change Audio Player Settings](#Change-Audio-Player-Settings)
 4. [License](#License)
 
 ## Description
@@ -24,9 +24,9 @@ git clone https://github.com/mohakdev/Unity-Audio-System.git
 - Once installed open the repository folder in Unity
 ![FolderImage](https://i.imgur.com/zqmBTCm.png)
 - Drag the Audio System GameObject into your first scene of the game
-![DragPrefab](https://i.imgur.com/ZfhoMkf.png)
-- Go to Scripts/AudioManager.cs
-![AudioManagerDir](https://i.imgur.com/KLobYMw.png)
+![DragPrefab](https://i.imgur.com/ZfhoMkf.png)  
+- Go to Scripts/SoundClips.cs
+![AudioManagerDir](https://i.imgur.com/MTrDwiw.png)
 - Find SoundTypes enum. This is the place where you need to enter all the types of sound you want to play.
 ![SoundTypesEnum](https://i.imgur.com/hADJ2uF.png)
 - Once added go back to Inspector, Click on AudioSystem GameObject and find Audio List.
@@ -40,30 +40,35 @@ In whichever script you wanna play audio simply add
 ```cs
 using RadiantTools.AudioSystem;
 ```
-Note -> If you are using Assembly Definitions then don't forget to add this assembly as a reference.
-### Play Sound
+**Note -> If you are using Assembly Definitions then don't forget to add this assembly as a reference.**
+
+### Components of Audio System
+***Audio Manager ->*** It controls and manages all the existing audio players. You can make or delete or get audio players using `AudioManager.cs`
+
+***Audio Player ->*** Basically it controls an audio track. It is nothing but a script attached to a gameobject with `AudioSource` as a component. You can play Audio using a Audio Player. By default 2 AudioTracks exists which are Music and SoundSFX. Music Track has settings to make audio loop forever. While Ideally you should use SoundSFX to play one shot sounds like button click or victory sound etc. For more sounds like for example walking, car engine sound or something it is ideal to make your own custom audio track using Audio Manager.
+![Heirarchy](https://imgur.com/x7xVu2w.png)
+
+### Play One Shot Sounds
 ```cs
-AudioManager.Instance.PlayAudio(AudioManager.SoundTypes.AudioTwo);
+AudioPlayer soundSFX = AudioManager.Instance.GetAudioPlayer("SoundSFX");
+soundSFX.PlayAudioOnce(SoundTypes.AudioOne);
+
+//Using Custom Player to Play One Shot Sounds
+AudioPlayer customPlayer = AudioManager.Instance.MakeAudioPlayer("Test");
+customPlayer.PlayAudioOnce(SoundTypes.AudioOne);
 ```
-### Play Sound with changed settings
+### Play using Custom Sounds
+To Play continuous sounds like walking , car engine use a custom track and manage it settings that way
+```cs
+AudioPlayer customPlayer = AudioManager.Instance.MakeAudioPlayer("Test");
+customPlayer.SetAudioClip(customPlayer.GetAudioClip(SoundTypes.AudioTwo));
+customPlayer.SetAudioSettings(loop: true);
+customPlayer.PlayAudio();
+```
+### Change Audio Player Settings
  ```cs
  //Changing settings of audio as well
- AudioSettings audioSettings = new()
- {
-     pitch = 1.3f,
-     volume = 0.6f
- };
-AudioManager.Instance.PlayAudio(AudioManager.SoundTypes.AudioOne, audioSettings);
+customPlayer.SetAudioSettings(loop: true, startOnPlay : true, volume : 1, pitch : 1);
  ```
-### Built in Music System
-This audio-system also has a built in music system so not only can you play audio but also play your favourite music as background music for your game.
-
-- Simply go into AudioSystem GameObject and then go into Music
-![MusicList](https://i.imgur.com/pwIpQnw.png)
-- Add your favourite music in MusicList and it will automatically start playing when the game begins and once the playlist comes to an end it will restart from the beginning.
-### Helper Methods
-These helper methods will save you a lot of time.
-1. `AudioManager.Instance.GetMusicSource()` - Returns you the Audio Source which plays all music.
-2. `AudioManager.Instance.GetAudioClip()` - Returns you the Audio Clip and takes SoundType as Input.
 ## License
 This code is licensed under MIT License which you can read [here](https://github.com/mohakdev/Unity-Audio-System/blob/main/LICENSE)
