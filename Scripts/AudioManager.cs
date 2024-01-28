@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RadiantTools.AudioSystem
@@ -9,7 +10,8 @@ namespace RadiantTools.AudioSystem
         public SoundClips[] audioList;
 
         //Just your typical singleton pattern.
-        public static AudioManager Instance { get; private set; }        
+        public static AudioManager Instance { get; private set; }
+        public static List<AudioPlayer> audioPlayerList; 
         void Start()
         {
             // If there is an instance, and it's not me, delete myself.
@@ -41,7 +43,9 @@ namespace RadiantTools.AudioSystem
             audioObject.transform.SetParent(transform);
             //Adding an AudioSource & AudioPlayer to the AudioObject
             audioObject.AddComponent<AudioSource>();
-            return audioObject.AddComponent<AudioPlayer>();
+            AudioPlayer audioPlayer = audioObject.AddComponent<AudioPlayer>();
+            audioPlayerList.Add(audioPlayer);
+            return audioPlayer;
         }
 
         /// <summary>

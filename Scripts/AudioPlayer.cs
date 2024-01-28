@@ -37,6 +37,23 @@ namespace RadiantTools.AudioSystem
             audioSource.Play();
         }
 
+        public void SetAudioVolume(float volume)
+        {
+            audioSource.volume = volume;
+        }
+        public void SetAudioPitch(float pitch)
+        {
+            audioSource.pitch = pitch;
+        }
+        public void SetAudioLoop(bool loop)
+        {
+            audioSource.loop = loop;
+        }
+        public void SetAudioStart(bool playOnStart)
+        {
+            audioSource.playOnAwake = playOnStart;
+        }
+
         /// <summary>
         /// Changes audio settings
         /// </summary>
